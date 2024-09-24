@@ -26,5 +26,5 @@ bnb_config = BitsAndBytesConfig(
 model = AutoModelForCausalLM.from_pretrained(model_name, quantization_config=bnb_config)
 
 # Save the quantized model and tokenizer to the specified path
-model.save_pretrained("../Models/" + quant_path, safetensors=True)
-tokenizer.save_pretrained("../Models/" + quant_path)
+model.save_pretrained("../../Models/" + quant_path, safetensors=True)
+tokenizer.save_pretrained("../../Models/" + quant_path)

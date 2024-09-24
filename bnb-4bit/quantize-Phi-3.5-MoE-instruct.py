@@ -34,5 +34,5 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 
 # Save the quantized model and tokenizer to the specified path
-model.save_pretrained("../Models/" + quant_path, safetensors=True)
-tokenizer.save_pretrained("../Models/" + quant_path)
+model.save_pretrained("../../Models/" + quant_path, safetensors=True)
+tokenizer.save_pretrained("../../Models/" + quant_path)
