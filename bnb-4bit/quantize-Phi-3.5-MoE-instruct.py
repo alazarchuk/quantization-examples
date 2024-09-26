@@ -1,7 +1,6 @@
-import os
+from dotenv import load_dotenv
 
-## Saves about 2 Gb of memory, just enough to fit the model in a 24 Gb GPU
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
+load_dotenv()
 
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
