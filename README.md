@@ -3,11 +3,15 @@ All scripts expect that there is a folder called "Models" outside the repo folde
 are saved.
 
 # BnB 4 bits
-All models in the folder were successfully quantized though none of them were tested.
-I am planning to test Inference on Tesla M40 in the nearest future. While I have certain
-confidence in almost all models, I don't know how Phi MoE will behave, because it requires
-Flash Attention library. Everything I know about it is that it speeds up performance on modern
-Nvidia architectures like Ada, but I don't know if it's compatible with dinosaurs like my M40 or P40.
+All models in the folder were successfully quantized and tested. 
+
+## Phi-3.5-MoE
+`.env.example` file contains one specific line: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True`. It helps to just fit
+model into 24 Gb. Without this line quantization and inference crashes.
+
+## CPU inference
+Just for gigs I have added CPU inference example `inference-Mistral-7B-Instruct-v0.3-cpu.py`. It's 20x slower on my 10 years old XEONs,
+but it's expected. I suspect CPU optimized quatizaton can increase performance dramatically.
 
 # BnB 8 bits
 Contains one example of Mixtral 8x7B with CPU offloading to do quantization, but I haven't found the magic combination yet.
