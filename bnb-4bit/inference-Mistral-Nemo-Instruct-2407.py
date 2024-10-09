@@ -1,15 +1,18 @@
-import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+import wandb
+import os
+from dotenv import load_dotenv
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
-# Check if the current CUDA device supports bfloat16 precision
-if torch.cuda.is_bf16_supported():
-    compute_dtype = torch.bfloat16
-else:
-    compute_dtype = torch.float32
+load_dotenv()
 
 # Define the model name and the path where the quantized model will be saved
 quant_path = "Mistral-Nemo-Instruct-2407-bnb-4bit"
 model_name = "../../Models/" + quant_path
+
+run = wandb.init(
+    project=f'{os.environ["WANDB_PROJECT_PREFIX"]} -> {quant_path}',
+    job_type="inference",
+)
 
 # Load the tokenizer for the specified model
 tokenizer = AutoTokenizer.from_pretrained(model_name)

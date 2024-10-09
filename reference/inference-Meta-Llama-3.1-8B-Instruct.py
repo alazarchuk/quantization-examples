@@ -6,18 +6,11 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 
 load_dotenv()
 
-# Check if the current CUDA device supports bfloat16 precision
-if torch.cuda.is_bf16_supported():
-    torch_dtype = torch.bfloat16
-else:
-    torch_dtype = torch.float16
-
-# Define the model name and the path where the quantized model will be saved
-quant_path = "Mistral-7B-Instruct-v0.3-bnb-4bit"
-model_name = "../../Models/" + quant_path
+# Define the model name
+model_name = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 
 run = wandb.init(
-    project=f'{os.environ["WANDB_PROJECT_PREFIX"]} -> {quant_path} (F16)',
+    project=f'{os.environ["WANDB_PROJECT_PREFIX"]} -> {model_name.split("/")[1]}',
     job_type="inference",
 )
 
@@ -25,7 +18,9 @@ run = wandb.init(
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 # Load the model with the specified quantization configuration
-model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch_dtype)
+model = AutoModelForCausalLM.from_pretrained(
+    model_name, device_map="cuda", torch_dtype=torch.float16
+)
 
 input_text = "Write me a story about Machine Learning."
 input_ids = tokenizer(input_text, return_tensors="pt").to("cuda")
