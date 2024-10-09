@@ -10,7 +10,7 @@ else:
 
 # Define the model name and the path where the quantized model will be saved
 model_name = "mistralai/Mistral-7B-Instruct-v0.3"
-quant_path = "Mistral-7B-Instruct-v0.3-bnb-4bit"
+quant_path = "Mistral-7B-Instruct-v0.3-autoroundsym-4bit"
 
 # Load the tokenizer for the specified model
 tokenizer = AutoTokenizer.from_pretrained(model_name)
