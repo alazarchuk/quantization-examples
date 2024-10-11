@@ -1,16 +1,16 @@
+import torch
 import wandb
 import os
 from dotenv import load_dotenv
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoTokenizer, MllamaForConditionalGeneration
 
 load_dotenv()
 
-# Define the model name and the path where the quantized model will be saved
-quant_path = "Meta-Llama-3.1-8B-Instruct-bnb-4bit"
-model_name = "../../Models/" + quant_path
+# Define the model name
+model_name = "meta-llama/Llama-3.2-11B-Vision"
 
 run = wandb.init(
-    project=f'{os.environ["WANDB_PROJECT_PREFIX"]} -> {quant_path}',
+    project=f'{os.environ["WANDB_PROJECT_PREFIX"]} -> {model_name.split("/")[1]}',
     job_type="inference",
 )
 
@@ -18,7 +18,9 @@ run = wandb.init(
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 # Load the model with the specified quantization configuration
-model = AutoModelForCausalLM.from_pretrained(model_name)
+model = MllamaForConditionalGeneration.from_pretrained(
+    model_name, device_map="cuda", torch_dtype=torch.float16
+)
 
 input_text = "Write me a story about Machine Learning."
 input_ids = tokenizer(input_text, return_tensors="pt").to("cuda")
